@@ -57,7 +57,7 @@ template <typename T>
 void Node<T>::Swap(Node<T>& other) {
   std::swap(this->prev_, other.prev_);
   std::swap(this->next_, other.next_);
-  std::swap(this->value_, other.value_;)
+  std::swap(this->value_, other.value_);
   }
 template <typename T>
 Node<T>& Node<T>::operator=(Node<T>& const other){
