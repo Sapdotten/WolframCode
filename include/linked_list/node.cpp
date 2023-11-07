@@ -1,9 +1,12 @@
 #ifndef INCLUDE_NODE_CPP
 #define INCLUDE_NODE_CPP
 namespace wolfram_code {
+template <typename T>
+class LinkedList;
 
 template <typename T>
 class Node {
+  friend LinkedList<T>;
   Node<T>* prev_;
   Node<T>* next_;
   T value_;
