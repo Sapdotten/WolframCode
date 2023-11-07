@@ -187,6 +187,23 @@ namespace wolfram_code {
     this->head_ = past->next_;
   }
 
+  template <class T>
+  void LinkedList<T>::DeleteNode(T const& value) {
+    Node<T>* ptr = this->head_;
+    for (int i = 0; i < size_; ++i) {
+      if (ptr->value_ == value) {
+        ptr->prev_->next_ = ptr->next_;
+        ptr->next_->prev_ = ptr->prev_;
+        Node<T>* next = ptr->next_;
+        delete ptr;
+        this->size_--;
+        ptr = next;
+      } else
+        ptr = ptr->next_;
+    }
+  }
+
+
   }//namespace wolfram_code
 
 
