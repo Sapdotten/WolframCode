@@ -40,6 +40,9 @@ LinkedList<T>::LinkedList() {
 
 template <typename T>
 LinkedList<T>::LinkedList(int size, T const& value) {
+  if (size <= 0) {
+    throw std::runtime_error("Size can't be equal or less 0");
+  }
   this->size_ = size;
   this->head_ = new Node<T>(value);
   Node<T>* ptr = this->head_;
@@ -54,11 +57,14 @@ LinkedList<T>::LinkedList(int size, T const& value) {
 
 template <typename T>
 LinkedList<T>::LinkedList(int size) {
+  if (size <= 0) {
+    throw std::runtime_error("Size can't be equal or less 0");
+  }
   this->size_ = size;
   this->head_ = new Node<T>;
   Node<T>* ptr = this->head_;
   srand((unsigned int)time(NULL));
-  for (int i = 0; i<this-> size_ - 1; ++i) {
+  for (int i = 0; i < this->size_ - 1; ++i) {
     ptr->value_ = rand() % 2;
     ptr->next_ = new Node<T>;
     ptr->next_->prev_ = ptr;
@@ -139,7 +145,7 @@ void LinkedList<T>::PushHead(Node<T> const& node) {
 template <class T>
 void LinkedList<T>::PopTail() {
   if (this->head_ == nullptr) {
-    std::runtime_error("List is empty");
+    throw std::runtime_error("List is empty");
   } else if (this->size_ == 1) {
     delete this->head_;
     this->head_ = nullptr;
@@ -203,7 +209,7 @@ void LinkedList<T>::DeleteNode(T const& value) {
 template <class T>
 Node<T>& LinkedList<T>::operator[](int index) {
   if (index >= this->size_ || index < 0) {
-    std::runtime_error("Index is invalid");
+    throw std::runtime_error("Index is invalid");
   }
   Node<T>* ptr = this->head_;
   for (int i = 0; i < index; ++i) {
@@ -215,7 +221,7 @@ Node<T>& LinkedList<T>::operator[](int index) {
 template <class T>
 Node<T> LinkedList<T>::operator[](int index) const {
   if (index >= this->size_ || index < 0) {
-    std::runtime_error("Index is invalid");
+    throw std::runtime_error("Index is invalid");
   }
   Node<T>* ptr = this->head_;
   for (int i = 0; i < index; ++i) {
