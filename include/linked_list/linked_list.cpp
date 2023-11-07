@@ -20,10 +20,10 @@ namespace wolfram_code {
     void Swap(LinkedList<T> &other);
     LinkedList<T>& operator=(LinkedList<T> const& other);
     ~LinkedList();
-    void PushTail(Node<T> node);
-    void PushTail(LinkedList<T> other);
-    void PushHead(Node<T> node);
-    void PushHead(LinkedList<T> other);
+    void PushTail(Node<T> const &node);
+    void PushTail(LinkedList<T> const &other);
+    void PushHead(Node<T> const &node);
+    void PushHead(LinkedList<T> const &other);
     void PopHead();
     void PopTail();
     void DeleteNode(T const &value);
@@ -106,6 +106,34 @@ namespace wolfram_code {
       delete ptr->prev_;
     }
     delete this->head_;
+  }
+  
+  template <typename T>
+  void LinkedList<T>::PushTail(Node<T> const &node) {
+    this->head_->prev_->next_ = new Node<T>(node.value_);
+    this->head_->prev_->prev_ = this->prev_;
+    this->head_->prev_ = this->head_->prev_->next_;
+    this->head_->prev_->next_ = this->head_;
+  }
+
+  template <typename T>
+  void LinkedList<T>::PushHead(Node<T> const& node) {
+    this->PushTail(node);
+    this->head_ = this->head_->prev_;
+  };
+
+  template <typename T>
+  void LinkedList<T>::PopTail() {
+    Node<T>* ptr = this->head_->prev_;
+    this->head_->prev_ = ptr->prev_;
+    ptr->prev_->next_ = this->head_;
+    delete ptr;
+  }
+
+  template <typename T>
+  void LinkedList<T>::PopHead() {
+    this->head_ = this->head_->next_;
+    this->PopTail();
   }
 
   }//namespace wolfram_code
