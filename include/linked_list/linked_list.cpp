@@ -23,7 +23,7 @@ namespace wolfram_code {
     void PushTail(Node<T> const& node);
     void PushTail(LinkedList<T> const& other);
     void PushHead(Node<T> const& node);
-    void PushHead(LinkedList<T> const &other);
+    void PushHead(LinkedList<T> const& other);
     void PopHead();
     void PopTail();
     void DeleteNode(T const &value);
@@ -115,6 +115,7 @@ namespace wolfram_code {
     }
   }
 
+
   template <class T>
   void LinkedList<T>::PushTail(Node<T> const& node) {
     if (this->head_ == nullptr) {
@@ -140,7 +141,7 @@ namespace wolfram_code {
   template <class T>
   void LinkedList<T>::PopTail() {
     if (this->head_ == nullptr) {
-      std::runtime_error("List is empty")
+      std::runtime_error("List is empty");
     } else if (this->size_ == 1) {
       delete this->head_;
       this->head_ = nullptr;
@@ -159,9 +160,32 @@ namespace wolfram_code {
     this->PopTail();
   }
 
+  template <class T>
+  void LinkedList<T>::PushTail(LinkedList<T> const &other) {
+    if (this->size_ == 0) {
+      *this = LinkedList(other);
+    } else if (other.size_) {
+      Node<T>* past = this->head_->prev_;
+      Node<T>* ptr = past;
+      Node<T>* other_ptr = other.head_;
+      for (int i = 0; i < other.size_; ++i) {
+        ptr->next_ = new Node<T>(other_ptr->value_);
+        ptr->next_->prev_ = ptr;
+        other_ptr = other_ptr->next_;
+        ptr = ptr->next_;
+      }
+      ptr->next_ = this->head_;
+      this->head_->prev_ = ptr;
+      this->size_ += other.size_;
+    }
+  }
 
-
-
+  template <class T>
+  void LinkedList<T>::PushHead(LinkedList<T> const& other) {
+    Node<T>* past = this->head_->prev_;
+    this->PushTail(other);
+    this->head_ = past->next_;
+  }
 
   }//namespace wolfram_code
 
