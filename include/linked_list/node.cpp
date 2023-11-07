@@ -20,7 +20,8 @@ class Node {
   ~Node();
   Node<T>& operator=(Node<T> const &other);
   void Swap(Node<T>& other);
-
+  T GetValue() const;
+  void SetValue(T const& value);
 };
 
 template <typename T>
@@ -74,6 +75,19 @@ Node<T>& Node<T>::operator=(Node<T> const &other){
   Node<T> temp(other);
   this->Swap(temp);
   return *this;
+ }
+
+//T GetValue() const;
+// void SetValue(T const& value);
+
+template <typename T>
+T Node<T>::GetValue() const{
+   return this->value_;
+ }
+
+template <typename T>
+void Node<T>::SetValue(T const& value) {
+   this->value_ = value;
  }
 
 }  // namespace wolfram_code
