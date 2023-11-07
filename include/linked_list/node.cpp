@@ -17,7 +17,7 @@ class Node {
   Node(Node<T>* prev, Node* next);
   Node(T const& value);
   Node(Node<T> const &other);
-  ~Node();
+  ~Node() = default;
   Node<T>& operator=(Node<T> const &other);
   void Swap(Node<T>& other);
   T GetValue() const;
@@ -50,11 +50,6 @@ Node<T>::Node(Node<T>* prev, Node* next) {
   this->next_ = next;
 }
 
-template <typename T>
-Node<T>::~Node() {
-  this->prev_ = nullptr;
-  this->next_ = nullptr;
-}
 
 template <typename T>
 Node<T>::Node(Node<T> const &other){

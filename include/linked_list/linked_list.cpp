@@ -58,7 +58,7 @@ LinkedList<T>::LinkedList(int size) {
   this->head_ = new Node<T>;
   Node<T>* ptr = this->head_;
   srand((unsigned int)time(NULL));
-  for (int i = 0; i<this> size_ - 1; ++i) {
+  for (int i = 0; i<this-> size_ - 1; ++i) {
     ptr->value_ = rand() % 2;
     ptr->next_ = new Node<T>;
     ptr->next_->prev_ = ptr;
@@ -66,7 +66,7 @@ LinkedList<T>::LinkedList(int size) {
   }
   ptr->value_ = rand() % 2;
   ptr->next_ = this->head_;
-  this->prev_ = ptr;
+  this->head_->prev_ = ptr;
 }
 template <typename T>
 LinkedList<T>::LinkedList(LinkedList const& other) {
@@ -106,11 +106,12 @@ template <typename T>
 LinkedList<T>::~LinkedList() {
   if (this->head_ != nullptr) {
     Node<T>* ptr = this->head_;
-    while (ptr->next_ != nullptr) {
+    Node<T>* past = this->head_->prev_;
+    for (int i = 1; i < this->size_; ++i) {
       ptr = ptr->next_;
       delete ptr->prev_;
     }
-    delete this->head_;
+    delete ptr;
   }
 }
 
