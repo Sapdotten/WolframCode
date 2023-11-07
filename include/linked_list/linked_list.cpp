@@ -17,10 +17,9 @@ namespace wolfram_code {
     LinkedList(int size, T const& value);
     LinkedList(int size);  //заполняет список случайными значениями
     LinkedList(LinkedList<T> const &other);
-    void RandomFilling();
-    void Swap();
-    LinkedList& operator=(LinkedList<T>& other);
-    ~LinkedList() = default;
+    void Swap(LinkedList<T> &other);
+    LinkedList<T>& operator=(LinkedList<T> const& other);
+    ~LinkedList();
     void PushTail(Node<T> node);
     void PushTail(LinkedList<T> other);
     void PushHead(Node<T> node);
@@ -84,6 +83,29 @@ namespace wolfram_code {
     }
     ptr->next_ = this->head_;
     this->head_->prev = ptr;
+  }
+
+  template <typename T>
+  void LinkedList<T>::Swap(LinkedList<T> &other) {
+    swap(this->head_, other.head_);
+    swap(this->size_, other.size_);
+  }
+  
+  template <typename T>
+  LinkedList<T>& LinkedList<T>::operator=(LinkedList<T> const& other) {
+    LinkedList<T> temp(other);
+    this->Swap(temp);
+    return *this;
+  }
+
+  template <typename T>
+  LinkedList<T>::~LinkedList() {
+    Node<T> *ptr = this->head_;
+    while (ptr->next_ != nullptr) {
+      ptr = ptr->next_;
+      delete ptr->prev_;
+    }
+    delete this->head_;
   }
 
   }//namespace wolfram_code
