@@ -3,12 +3,12 @@
 #include "node.cpp"
 #include <random>
 #include <time.h>
+#include <stdexcept>
 
 namespace wolfram_code {
   template <typename T>
   class LinkedList {
  public:
-  friend Node<T>;
     Node<T>* head_;
     int size_;
 
@@ -20,9 +20,9 @@ namespace wolfram_code {
     void Swap(LinkedList<T> &other);
     LinkedList<T>& operator=(LinkedList<T> const& other);
     ~LinkedList();
-    void PushTail(Node<T> const &node);
-    void PushTail(LinkedList<T> const &other);
-    void PushHead(Node<T> const &node);
+    void PushTail(Node<T> const& node);
+    void PushTail(LinkedList<T> const& other);
+    void PushHead(Node<T> const& node);
     void PushHead(LinkedList<T> const &other);
     void PopHead();
     void PopTail();
@@ -71,18 +71,23 @@ namespace wolfram_code {
   }
   template <typename T>
   LinkedList<T>::LinkedList(LinkedList const& other) {
-    this->size_ = other.size_;
-    Node<T> *other_ptr = other->head_;
-    this->head_ = new Node<T>(other_ptr->value_);
-    Node<T>* ptr = this->head_;
-    while (other.head_->prev_ != other_ptr) {
-      ptr->next_ = new Node<T>(other_ptr->next);
-      ptr->next_->prev_ = ptr;
-      other_ptr = other_ptr->next_;
-      ptr = ptr->next_;
+    if (other.size_ == 0) {
+      this->head_ = nullptr;
+      this->size_ = 0;
+    } else {
+      this->size_ = other.size_;
+      Node<T>* other_ptr = other->head_;
+      this->head_ = new Node<T>(other_ptr->value_);
+      Node<T>* ptr = this->head_;
+      while (other.head_->prev_ != other_ptr) {
+        ptr->next_ = new Node<T>(other_ptr->next);
+        ptr->next_->prev_ = ptr;
+        other_ptr = other_ptr->next_;
+        ptr = ptr->next_;
+      }
+      ptr->next_ = this->head_;
+      this->head_->prev = ptr;
     }
-    ptr->next_ = this->head_;
-    this->head_->prev = ptr;
   }
 
   template <typename T>
@@ -100,41 +105,63 @@ namespace wolfram_code {
 
   template <typename T>
   LinkedList<T>::~LinkedList() {
-    Node<T> *ptr = this->head_;
-    while (ptr->next_ != nullptr) {
-      ptr = ptr->next_;
-      delete ptr->prev_;
+    if (this->head_ != nullptr) {
+      Node<T>* ptr = this->head_;
+      while (ptr->next_ != nullptr) {
+        ptr = ptr->next_;
+        delete ptr->prev_;
+      }
+      delete this->head_;
     }
-    delete this->head_;
-  }
-  
-  template <typename T>
-  void LinkedList<T>::PushTail(Node<T> const &node) {
-    this->head_->prev_->next_ = new Node<T>(node.value_);
-    this->head_->prev_->prev_ = this->prev_;
-    this->head_->prev_ = this->head_->prev_->next_;
-    this->head_->prev_->next_ = this->head_;
   }
 
-  template <typename T>
+  template <class T>
+  void LinkedList<T>::PushTail(Node<T> const& node) {
+    if (this->head_ == nullptr) {
+      this->head_ = new Node<T>(node.value_);
+      this->head_->next_ = this->head_;
+      this->head_->prev_ = this->head_;
+    } else {
+      this->head_->prev_->next_ = new Node<T>(node.value_);
+      this->head_->prev_->prev_ = this->prev_;
+      this->head_->prev_ = this->head_->prev_->next_;
+      this->head_->prev_->next_ = this->head_;
+    }
+    this->size_++;
+  }
+
+
+  template <class T>
   void LinkedList<T>::PushHead(Node<T> const& node) {
     this->PushTail(node);
     this->head_ = this->head_->prev_;
-  };
-
-  template <typename T>
-  void LinkedList<T>::PopTail() {
-    Node<T>* ptr = this->head_->prev_;
-    this->head_->prev_ = ptr->prev_;
-    ptr->prev_->next_ = this->head_;
-    delete ptr;
   }
 
-  template <typename T>
+  template <class T>
+  void LinkedList<T>::PopTail() {
+    if (this->head_ == nullptr) {
+      std::runtime_error("List is empty")
+    } else if (this->size_ == 1) {
+      delete this->head_;
+      this->head_ = nullptr;
+    } else {
+      Node<T>* ptr = this->head_->prev_;
+      this->head_->prev_ = ptr->prev_;
+      ptr->prev_->next_ = this->head_;
+      delete ptr;
+    }
+    this->size_--;
+  }
+
+  template <class T>
   void LinkedList<T>::PopHead() {
     this->head_ = this->head_->next_;
     this->PopTail();
   }
+
+
+
+
 
   }//namespace wolfram_code
 
