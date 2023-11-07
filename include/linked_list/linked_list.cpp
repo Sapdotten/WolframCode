@@ -14,6 +14,7 @@ class LinkedList {
   int size_;
 
  public:
+  int GetSize() const;
   LinkedList();
   LinkedList(int size, T const& value);
   LinkedList(int size);  //заполняет список случайными значениями
@@ -46,13 +47,13 @@ LinkedList<T>::LinkedList(int size, T const& value) {
   this->size_ = size;
   this->head_ = new Node<T>(value);
   Node<T>* ptr = this->head_;
-  for (int i = 0; i<this> size_ - 1; ++i) {
+  for (int i = 0; i<this-> size_ - 1; ++i) {
     ptr->next_ = new Node<T>(value);
     ptr->next_->prev_ = ptr;
     ptr = ptr->next_;
   }
   ptr->next_ = this->head_;
-  this->prev_ = ptr;
+  this->head_->prev_ = ptr;
 }
 
 template <typename T>
@@ -81,24 +82,24 @@ LinkedList<T>::LinkedList(LinkedList const& other) {
     this->size_ = 0;
   } else {
     this->size_ = other.size_;
-    Node<T>* other_ptr = other->head_;
+    Node<T>* other_ptr = other.head_;
     this->head_ = new Node<T>(other_ptr->value_);
     Node<T>* ptr = this->head_;
     while (other.head_->prev_ != other_ptr) {
-      ptr->next_ = new Node<T>(other_ptr->next);
+      ptr->next_ = new Node<T>(other_ptr->next_->value_);
       ptr->next_->prev_ = ptr;
       other_ptr = other_ptr->next_;
       ptr = ptr->next_;
     }
     ptr->next_ = this->head_;
-    this->head_->prev = ptr;
+    this->head_->prev_ = ptr;
   }
 }
 
 template <typename T>
 void LinkedList<T>::Swap(LinkedList<T>& other) {
-  swap(this->head_, other.head_);
-  swap(this->size_, other.size_);
+  std::swap(this->head_, other.head_);
+  std::swap(this->size_, other.size_);
 }
 
 template <typename T>
@@ -112,7 +113,6 @@ template <typename T>
 LinkedList<T>::~LinkedList() {
   if (this->head_ != nullptr) {
     Node<T>* ptr = this->head_;
-    Node<T>* past = this->head_->prev_;
     for (int i = 1; i < this->size_; ++i) {
       ptr = ptr->next_;
       delete ptr->prev_;
@@ -129,7 +129,7 @@ void LinkedList<T>::PushTail(Node<T> const& node) {
     this->head_->prev_ = this->head_;
   } else {
     this->head_->prev_->next_ = new Node<T>(node.value_);
-    this->head_->prev_->prev_ = this->prev_;
+    this->head_->prev_->next_->prev_ = this->head_->prev_;
     this->head_->prev_ = this->head_->prev_->next_;
     this->head_->prev_->next_ = this->head_;
   }
@@ -228,6 +228,11 @@ Node<T> LinkedList<T>::operator[](int index) const {
     ptr = ptr->next_;
   }
   return *ptr;
+}
+
+template <class T>
+int LinkedList<T>::GetSize() const {
+  return this->size_;
 }
 
 }  // namespace wolfram_code
