@@ -22,6 +22,8 @@ class Node {
   void Swap(Node<T>& other);
   T GetValue() const;
   void SetValue(T const& value);
+  Node<T>* GetNext() const;
+  Node<T>* GetPrev() const;
 };
 
 template <typename T>
@@ -35,6 +37,7 @@ template <typename T>
 Node<T>::Node() {
   this->prev_ = nullptr;
   this->next_ = nullptr;
+  this->value_ = T(0);
 }
 
 template <typename T>
@@ -85,6 +88,16 @@ void Node<T>::SetValue(T const& value) {
    this->value_ = value;
  }
 
-}  // namespace wolfram_code
+template <typename T>
+Node<T>* Node<T>::GetNext() const {
+   return this->next_;
+ }
+
+template <class T>
+ Node<T>* Node<T>::GetPrev() const{
+   return this->prev_;
+ }
+
+ }  // namespace wolfram_code
 
 #endif

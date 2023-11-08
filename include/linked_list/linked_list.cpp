@@ -31,6 +31,7 @@ class LinkedList {
   void DeleteNode(T const& value);
   Node<T>& operator[](int index);
   Node<T> operator[](int index) const;
+  Node<T>* GetHead() const;
 };
 
 template <typename T>
@@ -160,6 +161,7 @@ void LinkedList<T>::PopTail() {
 
 template <class T>
 void LinkedList<T>::PopHead() {
+  if (this->size_!=0)
   this->head_ = this->head_->next_;
   this->PopTail();
 }
@@ -233,6 +235,11 @@ Node<T> LinkedList<T>::operator[](int index) const {
 template <class T>
 int LinkedList<T>::GetSize() const {
   return this->size_;
+}
+
+template <class T>
+Node<T>* LinkedList<T>::GetHead() const {
+  return this->head_;
 }
 
 }  // namespace wolfram_code
