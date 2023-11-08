@@ -2,6 +2,7 @@
 #include <iostream>
 #include <linked_list.cpp>
 #include <thread>
+#include <image.cpp>
 using namespace wolfram_code;
 using namespace std;
 
@@ -96,17 +97,14 @@ int main() {
   LinkedList<int> list(list_size);
   int code = GetWolframCode();
   int count = GetCount();
+  Image file("test_file.ppm", list_size, count);
   PrintList(list);
+  file.AddLine(list);
   for (int i = 0; i < count; ++i) {
     list = GetNextState(list, code);
     PrintList(list);
+    file.AddLine(list);
   }
-
-  
-  
-  
-
-  
   
 return 0; 
 }
