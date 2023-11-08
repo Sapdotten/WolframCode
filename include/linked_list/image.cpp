@@ -28,7 +28,6 @@ namespace wolfram_code {
         << "1" << std::endl;
   }
   out.close();
-  std::cout << "file has been writed ";
   }
 
  void Image::AddLine(LinkedList<int> const& list) { 
