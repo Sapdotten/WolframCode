@@ -10,8 +10,12 @@ if(MSVC)
     endif()
 endif()
 
-add_library(linked_list STATIC "include/linked_list/linked_list.cpp" "include/linked_list/node.cpp")
+add_library(linked_list STATIC "include/linked_list/linked_list.cpp" "include/linked_list/node.cpp" )
+add_library(image STATIC "include/linked_list/image.cpp")
 target_include_directories(linked_list PUBLIC "include/linked_list")
+target_include_directories(image PUBLIC "include/linked_list")
 
 add_executable (${PROJECT_NAME} "main.cpp")
 target_link_libraries(${PROJECT_NAME} linked_list)
+target_link_libraries(${PROJECT_NAME} image)
+target_link_libraries(image linked_list)
