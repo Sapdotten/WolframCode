@@ -1,5 +1,4 @@
 ﻿cmake_minimum_required (VERSION 3.11)
-
 project (WolframCode CXX)
 set(CMAKE_CXX_STANDARD 23)
 
@@ -12,10 +11,7 @@ if(MSVC)
 endif()
 
 add_library(linked_list STATIC "include/linked_list/linked_list.cpp" "include/linked_list/node.cpp")
-target_include_directories(linked_list PUBLIC "include")
-
-
+target_include_directories(linked_list PUBLIC "include/linked_list")
 
 add_executable (${PROJECT_NAME} "main.cpp")
-target_link_libraries(linked_list PUBLIC "include/linked_list/node.cpp")
 target_link_libraries(${PROJECT_NAME} linked_list)
